@@ -5,7 +5,7 @@ import { List } from './components/List';
 
 export default function App() {
   return (
-    <View className='pt-12 items-center'>
+    <View className="pt-12 items-center">
       <List />
     </View>
   );
