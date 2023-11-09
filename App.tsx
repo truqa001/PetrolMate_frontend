@@ -1,31 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { ref, onValue, getDatabase, child, get } from 'firebase/database';
+import { CheapStationsPage } from './pages/CheapStationsPage';
+import { NativeWindStyleSheet } from 'nativewind';
 import { useEffect, useState } from 'react';
-import { dbRef } from './firebaseConfig';
+import * as Location from 'expo-location';
 
 export default function App() {
-  const [data, setData] = useState([]);
+  const [userLocation, setUserLocation] = useState<{
+    longitude: number;
+    latitude: number;
+  }>();
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    // Reference to the database location you want to read from
-    get(child(dbRef, `/City/Adelaide/E10`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log('aaaaa', snapshot.val());
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
 
-    // Don't forget to remove the listener when the component unmounts
+      const { coords } = await Location.getCurrentPositionAsync({});
+      const currentLocation = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      };
+
+      setUserLocation(currentLocation);
+      console.log('currentLocation', currentLocation);
+    })();
   }, []);
 
-  return <View className="pt-12 items-center"></View>;
+  return (
+    <SafeAreaView>
+      <View className="p-2">
+        {userLocation && <CheapStationsPage userLocation={userLocation} />}
+      </View>
+    </SafeAreaView>
+  );
 }
+
+NativeWindStyleSheet.setOutput({
+  default: 'native',
+});
 
 const styles = StyleSheet.create({
   container: {

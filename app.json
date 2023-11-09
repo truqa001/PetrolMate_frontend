@@ -14,6 +14,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Petrol Mate to use your location."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },

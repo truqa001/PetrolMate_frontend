@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { View, Picker } from "react-native";
+import React, { useState } from 'react';
+import { SafeAreaView, Picker } from 'react-native';
 
 const MyComponent = () => {
-  const [selectedValue, setSelectedValue] = useState("option1");
+  const [selectedValue, setSelectedValue] = useState('option1');
 
   return (
-    <View>
+    <SafeAreaView>
       <Picker
         selectedValue={selectedValue}
         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
@@ -14,7 +14,7 @@ const MyComponent = () => {
         <Picker.Item label="Option 2" value="option2" />
         <Picker.Item label="Option 3" value="option3" />
       </Picker>
-    </View>
+    </SafeAreaView>
   );
 };
 
